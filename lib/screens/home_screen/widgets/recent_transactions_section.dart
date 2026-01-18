@@ -17,20 +17,20 @@ class RecentTransactionsSection extends StatelessWidget {
         .isEmpty;
     return Container(
       decoration: BoxDecoration(
-        color: Color(0xFF4A90E2),
+        color: const Color(0xFF4A90E2),
         borderRadius: BorderRadius.circular(8),
       ),
 
       child: Column(
         children: [
           transactionCard(context, isEmpty),
-          SizedBox(height: 10),
+          const SizedBox(height: 10),
           isEmpty
-              ? EmptyTransactions(
+              ? const EmptyTransactions(
                   message:
                       'Bu ay için henüz işlem yok.\nÜstteki butonları kullanarak gelir veya gider ekleyebilirsin.',
                 )
-              : RecentTransactionsList(),
+              : const RecentTransactionsList(),
         ],
       ),
     );
@@ -39,14 +39,14 @@ class RecentTransactionsSection extends StatelessWidget {
   Card transactionCard(BuildContext context, bool isEmpty) {
     return Card(
       child: isEmpty
-          ? ListTile(
+          ? const ListTile(
               title: Text(
                 "Son İşlemler",
                 style: TextStyle(fontWeight: FontWeight.bold),
               ),
             )
           : ListTile(
-              title: Text(
+              title: const Text(
                 "Son İşlemler",
                 style: TextStyle(fontWeight: FontWeight.bold),
               ),
@@ -54,10 +54,10 @@ class RecentTransactionsSection extends StatelessWidget {
                 onTap: () => Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => AllTransactionsScreen(),
+                    builder: (context) => const AllTransactionsScreen(),
                   ),
                 ),
-                child: Text(
+                child: const Text(
                   "Tümünü Gör...",
                   style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
                 ),

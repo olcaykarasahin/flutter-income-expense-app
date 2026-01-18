@@ -20,19 +20,19 @@ class TransactionProvider extends ChangeNotifier {
     return sorted.take(5).toList();
   }
 
-  int get totalIncome {
+  double get totalIncome {
     return filteredTransaction
         .where((t) => t.isIncome)
         .fold(0, (sum, t) => sum + t.amount);
   }
 
-  int get totalExpense {
+  double get totalExpense {
     return filteredTransaction
         .where((t) => !t.isIncome)
         .fold(0, (sum, t) => sum + t.amount);
   }
 
-  int get netTotal => totalIncome - totalExpense;
+  double get netTotal => totalIncome - totalExpense;
 
   String get selectedMonthLabel {
     const month = [

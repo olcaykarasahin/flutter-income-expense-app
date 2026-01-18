@@ -21,11 +21,11 @@ class GelirGiderApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
 
       theme: ThemeData(
-        cardTheme: CardThemeData(color: Colors.white),
-        appBarTheme: AppBarTheme(backgroundColor: Color(0xFF4A90E2)),
-        scaffoldBackgroundColor: Color(0xFFF7F9FC),
+        cardTheme: const CardThemeData(color: Colors.white),
+        appBarTheme: const AppBarTheme(backgroundColor: Color(0xFF4A90E2)),
+        scaffoldBackgroundColor: const Color(0xFFF7F9FC),
       ),
-      home: HomePage(),
+      home: const HomePage(),
     );
   }
 }

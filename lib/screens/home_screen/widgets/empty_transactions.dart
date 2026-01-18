@@ -11,11 +11,11 @@ class EmptyTransactions extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Icon(Icons.receipt_long, size: 56),
+          const Icon(Icons.receipt_long, size: 56),
           const SizedBox(height: 12),
           Text(
             message,
-            style: TextStyle(fontSize: 20),
+            style: const TextStyle(fontSize: 20),
             textAlign: TextAlign.center,
           ),
         ],

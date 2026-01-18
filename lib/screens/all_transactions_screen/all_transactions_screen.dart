@@ -13,9 +13,9 @@ class AllTransactionsScreen extends StatelessWidget {
         context.watch<TransactionProvider>().filteredTransaction
           ..sort((a, b) => b.date.compareTo(a.date));
     return Scaffold(
-      appBar: AppBar(title: Text("Tüm İşlemler")),
+      appBar: AppBar(title: const Text("Tüm İşlemler")),
       body: transactions.isEmpty
-          ? Center(
+          ? const Center(
               child: EmptyTransactions(
                 message: "Seçili ay için işlem bulunmuyor.",
               ),
@@ -32,9 +32,9 @@ class AllTransactionsScreen extends StatelessWidget {
                         borderRadius: BorderRadius.circular(8),
                         color: Colors.red.shade600,
                       ),
-                      child: Icon(Icons.delete),
                       alignment: Alignment.centerRight,
-                      padding: EdgeInsets.only(right: 20),
+                      padding: const EdgeInsets.only(right: 20),
+                      child: const Icon(Icons.delete),
                     ),
                     onDismissed: (direction) {
                       context.read<TransactionProvider>().deleteTransaction(
@@ -47,7 +47,9 @@ class AllTransactionsScreen extends StatelessWidget {
                       onTap: () => Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => EditTransactionScreen(),
+                          builder: (context) => EditTransactionScreen(
+                            updatedTransactionModel: tx,
+                          ),
                         ),
                       ),
                       leading: Text(
@@ -70,7 +72,7 @@ class AllTransactionsScreen extends StatelessWidget {
                       ),
                       subtitle: Center(
                         child: Text(
-                          tx.title,
+                          tx.comment,
                           style: const TextStyle(
                             fontSize: 13,
                             fontWeight: FontWeight.bold,

@@ -29,9 +29,15 @@ class TransactionListItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
       child: ListTile(
-        leading: Text(
-          "${transaction.date.day}.${transaction.date.month}.${transaction.date.year}",
-          style: const TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
+        leading: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              "${transaction.date.day}.${transaction.date.month}.${transaction.date.year}",
+              style: const TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
+            ),
+            Text(transaction.paymentType.label),
+          ],
         ),
         title: Center(
           child: Text(
@@ -41,7 +47,7 @@ class TransactionListItem extends StatelessWidget {
         ),
         subtitle: Center(
           child: Text(
-            transaction.title,
+            transaction.comment,
             style: const TextStyle(fontSize: 13, fontWeight: FontWeight.bold),
           ),
         ),

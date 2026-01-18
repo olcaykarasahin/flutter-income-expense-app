@@ -40,7 +40,7 @@ class HomePage extends StatelessWidget {
               onAddExpense: () => _handleAddExpense(context),
             ),
 
-            RecentTransactionsSection(),
+            const RecentTransactionsSection(),
           ],
         ),
       ),

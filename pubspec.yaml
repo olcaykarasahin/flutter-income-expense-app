@@ -1,9 +1,6 @@
 name: gelir_gider
-
 description: "A new Flutter project."
-
 publish_to: 'none'
-
 version: 1.0.0+1
 
 environment:
@@ -22,6 +19,7 @@ dependencies:
   # ===== REQUIRED FOR ISAR PATH =====
   path_provider: ^2.1.4
   provider: ^6.1.5+1
+  intl: ^0.20.2
 
 dev_dependencies:
   flutter_test:
