@@ -62,12 +62,18 @@ class TransactionProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  void updateTransaction(String id, TransactionModel updatedTransaction) {
+  void updateTransaction(String id, TransactionModel transaction) {
     var changeTransactionIndex = _allTransactions.indexWhere((t) => t.id == id);
 
     if (changeTransactionIndex == -1) return; // bulunamadı
 
-    _allTransactions[changeTransactionIndex] = updatedTransaction;
+    _allTransactions[changeTransactionIndex] = transaction;
+    notifyListeners();
+  }
+
+  void addTransaction(TransactionModel transaction) {
+    _allTransactions.add(transaction);
+
     notifyListeners();
   }
 }

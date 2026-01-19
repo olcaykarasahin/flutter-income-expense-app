@@ -9,19 +9,15 @@ import 'package:gelir_gider/shared/transaction_widgets/date_inkwell.dart';
 import 'package:gelir_gider/shared/transaction_widgets/payment_inkwell.dart';
 import 'package:provider/provider.dart';
 
-class EditTransactionScreen extends StatefulWidget {
-  final TransactionModel updatedTransactionModel;
-
-  const EditTransactionScreen({
-    super.key,
-    required this.updatedTransactionModel,
-  });
+class AddScreen extends StatefulWidget {
+  final bool isIncome;
+  const AddScreen({super.key, required this.isIncome});
 
   @override
-  State<EditTransactionScreen> createState() => _EditTransactionScreenState();
+  State<AddScreen> createState() => _AddScreenState();
 }
 
-class _EditTransactionScreenState extends State<EditTransactionScreen> {
+class _AddScreenState extends State<AddScreen> {
   late DateTime _selectedDate;
   late bool _isIncome;
   late TextEditingController _amountController;
@@ -33,16 +29,12 @@ class _EditTransactionScreenState extends State<EditTransactionScreen> {
   @override
   void initState() {
     super.initState();
-    _selectedDate = widget.updatedTransactionModel.date;
-    _isIncome = widget.updatedTransactionModel.isIncome;
-    _amountController = TextEditingController(
-      text: widget.updatedTransactionModel.amount.toString(),
-    );
-    _commentController = TextEditingController(
-      text: widget.updatedTransactionModel.comment,
-    );
-    _selectedPaymentType = widget.updatedTransactionModel.paymentType;
-    _selectedCategory = widget.updatedTransactionModel.category;
+    _selectedDate = DateTime.now();
+    _isIncome = widget.isIncome;
+    _amountController = TextEditingController();
+    _commentController = TextEditingController();
+    _selectedPaymentType = PaymentType.cash;
+    _selectedCategory = _isIncome ? "Maaş" : "Yemek/Market";
   }
 
   @override
@@ -55,16 +47,18 @@ class _EditTransactionScreenState extends State<EditTransactionScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text("İşlem Değişikliği"), centerTitle: true),
+      appBar: AppBar(
+        title: Text(_isIncome ? "Gelir Ekle" : "Gider Ekle"),
+        centerTitle: true,
+      ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: SingleChildScrollView(
           child: Form(
             key: _formKey,
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const SizedBox(height: 20),
                 DateInkwell(
                   date: _selectedDate,
                   onChanged: (newDate) {
@@ -73,14 +67,15 @@ class _EditTransactionScreenState extends State<EditTransactionScreen> {
                     });
                   },
                 ),
+
                 const SizedBox(height: 20),
 
                 PaymentInkWellWidget(
                   isIncome: _isIncome,
                   selectedPaymentType: _selectedPaymentType,
-                  onChanged: (newPaymnet) {
+                  onChanged: (newPaymentType) {
                     setState(() {
-                      _selectedPaymentType = newPaymnet;
+                      _selectedPaymentType = newPaymentType;
                     });
                   },
                 ),
@@ -96,6 +91,7 @@ class _EditTransactionScreenState extends State<EditTransactionScreen> {
                     });
                   },
                 ),
+
                 const SizedBox(height: 20),
 
                 CommentTextFormField(commentcontroller: _commentController),
@@ -139,8 +135,8 @@ class _EditTransactionScreenState extends State<EditTransactionScreen> {
                           return;
                         }
 
-                        final updated = buildTransaction(
-                          id: widget.updatedTransactionModel.id,
+                        final transaction = buildTransaction(
+                          id: DateTime.now().millisecondsSinceEpoch.toString(),
                           date: _selectedDate,
                           isIncome: _isIncome,
                           paymentType: _selectedPaymentType,
@@ -148,23 +144,15 @@ class _EditTransactionScreenState extends State<EditTransactionScreen> {
                           comment: _commentController.text.trim(),
                           amount: amount,
                         );
-
-                        context.read<TransactionProvider>().updateTransaction(
-                          updated.id,
-                          updated,
-                        );
-                        Navigator.pop(context);
-
-                        context.read<TransactionProvider>().updateTransaction(
-                          updated.id,
-                          updated,
+                        context.read<TransactionProvider>().addTransaction(
+                          transaction,
                         );
 
                         Navigator.pop(context);
                       },
 
                       child: const Text(
-                        "İşlemi Güncelle",
+                        "İşlemi Kaydet",
                         style: TextStyle(color: Colors.black, fontSize: 20),
                       ),
                     ),
