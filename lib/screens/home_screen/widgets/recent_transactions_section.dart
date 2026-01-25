@@ -51,12 +51,18 @@ class RecentTransactionsSection extends StatelessWidget {
                 style: TextStyle(fontWeight: FontWeight.bold),
               ),
               trailing: GestureDetector(
-                onTap: () => Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const AllTransactionsScreen(),
-                  ),
-                ),
+                onTap: () {
+                  DateTime selectedMonth = context
+                      .read<TransactionProvider>()
+                      .selectedMonth;
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) =>
+                          AllTransactionsScreen(initialMonth: selectedMonth),
+                    ),
+                  );
+                },
                 child: const Text(
                   "Tümünü Gör...",
                   style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14),

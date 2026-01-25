@@ -12,16 +12,14 @@ class HomePage extends StatelessWidget {
   void _handleAddIncome(BuildContext context) {
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => AddScreen(isIncome: true)),
+      MaterialPageRoute(builder: (context) => const AddScreen(isIncome: true)),
     );
-    debugPrint("Gelir ekle tıklandı");
   }
 
   void _handleAddExpense(BuildContext context) {
-    debugPrint("Gider ekle tıklandı");
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => AddScreen(isIncome: false)),
+      MaterialPageRoute(builder: (context) => const AddScreen(isIncome: false)),
     );
   }
 

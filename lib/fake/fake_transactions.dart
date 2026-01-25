@@ -4,7 +4,7 @@ final List<TransactionModel> fakeTransactions = [
   TransactionModel(
     id: "1",
     comment: "Elektrik",
-    category: "Fatura",
+    category: "Faturalar",
     amount: 750,
     date: DateTime(2026, 1, 10),
     type: TransactionType.expense,
@@ -13,7 +13,7 @@ final List<TransactionModel> fakeTransactions = [
   TransactionModel(
     id: "2",
     comment: "Su",
-    category: "Fatura",
+    category: "Faturalar",
     amount: 1200,
     date: DateTime(2026, 2, 10),
     type: TransactionType.expense,
@@ -31,7 +31,7 @@ final List<TransactionModel> fakeTransactions = [
   TransactionModel(
     id: "4",
     comment: "Araba Camı Yapıldı",
-    category: "Araba",
+    category: "Diğer",
     amount: 500,
     date: DateTime(2026, 7, 10),
     type: TransactionType.expense,
@@ -40,7 +40,7 @@ final List<TransactionModel> fakeTransactions = [
   TransactionModel(
     id: "5",
     comment: "Mahkeme Harcı",
-    category: "Adli",
+    category: "Diğer",
     amount: 500,
     date: DateTime(2026, 5, 10),
     type: TransactionType.expense,
@@ -48,7 +48,7 @@ final List<TransactionModel> fakeTransactions = [
   TransactionModel(
     id: "6",
     comment: "Dogalgaz",
-    category: "Fatura",
+    category: "Faturalar",
     amount: 3500,
     date: DateTime(2026, 1, 2),
     type: TransactionType.expense,
@@ -57,7 +57,7 @@ final List<TransactionModel> fakeTransactions = [
   TransactionModel(
     id: "7",
     comment: "İnternet",
-    category: "Fatura",
+    category: "Faturalar",
     amount: 1000,
     date: DateTime(2026, 1, 27),
     type: TransactionType.expense,
@@ -66,7 +66,7 @@ final List<TransactionModel> fakeTransactions = [
   TransactionModel(
     id: "8",
     comment: "Telefon",
-    category: "Fatura",
+    category: "Faturalar",
     amount: 900,
     date: DateTime(2026, 1, 9),
     type: TransactionType.expense,
@@ -75,7 +75,7 @@ final List<TransactionModel> fakeTransactions = [
   TransactionModel(
     id: "9",
     comment: "D-Smart",
-    category: "Fatura",
+    category: "Faturalar",
     amount: 200,
     date: DateTime(2026, 1, 11),
     type: TransactionType.expense,

@@ -28,3 +28,18 @@ const Map<String, IconData> incomeCategoryIcons = {
   "Ek Gelir": Icons.add_circle,
   "Diğer": Icons.more_horiz,
 };
+
+const List<String> months = [
+  "Ocak",
+  "Şubat",
+  "Mart",
+  "Nisan",
+  "Mayıs",
+  "Haziran",
+  "Temmuz",
+  "Agustos",
+  "Eylül",
+  "Ekim",
+  "Kasım",
+  "Aralık",
+];

@@ -7,6 +7,8 @@ class TransactionProvider extends ChangeNotifier {
 
   final List<TransactionModel> _allTransactions = fakeTransactions;
 
+  List<TransactionModel> get allTransactions => _allTransactions;
+
   List<TransactionModel> get filteredTransaction {
     return _allTransactions.where((t) {
       return t.date.year == selectedMonth.year &&
