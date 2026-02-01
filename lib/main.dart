@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gelir_gider/providers/transaction_provider.dart';
-import 'package:gelir_gider/screens/home_screen/home_screen.dart';
+import 'package:gelir_gider/screens/root/root_page.dart';
 import 'package:provider/provider.dart';
 
 void main() {
@@ -25,7 +25,7 @@ class GelirGiderApp extends StatelessWidget {
         appBarTheme: const AppBarTheme(backgroundColor: Color(0xFF4A90E2)),
         scaffoldBackgroundColor: const Color(0xFFF7F9FC),
       ),
-      home: const HomePage(),
+      home: const MainScreen(),
     );
   }
 }

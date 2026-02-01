@@ -14,7 +14,8 @@ class TransactionSummaryCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final double net = income - expense;
     return Card(
-      color: Colors.grey.shade300,
+      color: const Color(0xFFB6D1F2),
+
       elevation: 1.5,
       child: Padding(
         padding: const EdgeInsets.all(6.0),

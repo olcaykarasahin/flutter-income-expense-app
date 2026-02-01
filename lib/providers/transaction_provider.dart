@@ -3,7 +3,7 @@ import 'package:gelir_gider/fake/fake_transactions.dart';
 import 'package:gelir_gider/models/transaction_model.dart';
 
 class TransactionProvider extends ChangeNotifier {
-  DateTime selectedMonth = DateTime(2026, 1);
+  DateTime selectedMonth = DateTime.now();
 
   final List<TransactionModel> _allTransactions = fakeTransactions;
 

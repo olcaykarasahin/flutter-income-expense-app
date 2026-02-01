@@ -1,26 +1,46 @@
 import 'package:flutter/material.dart';
+import 'package:gelir_gider/providers/transaction_provider.dart';
+
 import 'package:gelir_gider/screens/add_screen/add_screen.dart';
 
 import 'package:gelir_gider/screens/home_screen/widgets/monthly_summary_card.dart';
 import 'package:gelir_gider/screens/home_screen/widgets/quick_actions_row.dart';
 
 import 'package:gelir_gider/screens/home_screen/widgets/recent_transactions_section.dart';
+import 'package:provider/provider.dart';
 
 class HomePage extends StatelessWidget {
-  const HomePage({super.key});
+  final DateTime selectedMonth;
+  final void Function(DateTime month) onOpenAllTransactions;
 
-  void _handleAddIncome(BuildContext context) {
-    Navigator.push(
+  const HomePage({
+    super.key,
+    required this.selectedMonth,
+    required this.onOpenAllTransactions,
+  });
+
+  Future<void> _handleAddIncome(BuildContext context) async {
+    final month = context.read<TransactionProvider>().selectedMonth;
+    final saved = await Navigator.push<bool>(
       context,
-      MaterialPageRoute(builder: (context) => const AddScreen(isIncome: true)),
+      MaterialPageRoute(builder: (_) => const AddScreen(isIncome: true)),
     );
+
+    if (saved == true) {
+      onOpenAllTransactions(month);
+    }
   }
 
-  void _handleAddExpense(BuildContext context) {
-    Navigator.push(
+  Future<void> _handleAddExpense(BuildContext context) async {
+    final month = context.read<TransactionProvider>().selectedMonth;
+    final saved = await Navigator.push<bool>(
       context,
-      MaterialPageRoute(builder: (context) => const AddScreen(isIncome: false)),
+      MaterialPageRoute(builder: (_) => const AddScreen(isIncome: false)),
     );
+
+    if (saved == true) {
+      onOpenAllTransactions(month);
+    }
   }
 
   @override
@@ -41,7 +61,12 @@ class HomePage extends StatelessWidget {
               onAddExpense: () => _handleAddExpense(context),
             ),
 
-            const RecentTransactionsSection(),
+            RecentTransactionsSection(
+              selectedMonth: selectedMonth,
+              onSeeAll: (month) {
+                onOpenAllTransactions(month);
+              },
+            ),
           ],
         ),
       ),

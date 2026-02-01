@@ -15,27 +15,24 @@ class CategoryPicker extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Material(
+      color: Colors.white,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(16),
+        side: const BorderSide(color: Colors.black),
+      ),
       child: InkWell(
         onTap: () => openShowModalBottomSheet(context),
-        child: Card(
-          color: Colors.grey.shade300,
-          elevation: 1.5,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadiusGeometry.circular(30),
-            side: const BorderSide(color: Colors.black, width: 1.5),
-          ),
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  selectedCategory ?? "Tüm Kategoriler",
-                  style: const TextStyle(fontWeight: FontWeight.bold),
-                ),
-                const Icon(Icons.keyboard_arrow_down),
-              ],
-            ),
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                selectedCategory ?? "Tüm Kategoriler",
+                style: const TextStyle(fontWeight: FontWeight.bold),
+              ),
+              const Icon(Icons.keyboard_arrow_down),
+            ],
           ),
         ),
       ),
@@ -64,10 +61,7 @@ class CategoryPicker extends StatelessWidget {
                 title: const Center(
                   child: Text(
                     "Tüm Kategoriler",
-                    style: TextStyle(
-                      fontWeight: FontWeight.w500,
-                      fontSize: 16,
-                    ),
+                    style: TextStyle(fontWeight: FontWeight.w500, fontSize: 16),
                   ),
                 ),
                 trailing: selectedCategory == null

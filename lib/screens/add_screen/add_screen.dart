@@ -29,7 +29,9 @@ class _AddScreenState extends State<AddScreen> {
   @override
   void initState() {
     super.initState();
-    _selectedDate = DateTime.now();
+    DateTime homeDate = context.read<TransactionProvider>().selectedMonth;
+    _selectedDate = DateTime(homeDate.year, homeDate.month, 1);
+
     _isIncome = widget.isIncome;
     _amountController = TextEditingController();
     _commentController = TextEditingController();
@@ -144,11 +146,17 @@ class _AddScreenState extends State<AddScreen> {
                           comment: _commentController.text.trim(),
                           amount: amount,
                         );
-                        context.read<TransactionProvider>().addTransaction(
-                          transaction,
+
+                        final provider = context.read<TransactionProvider>();
+
+                        provider.addTransaction(transaction);
+
+                        provider.setSelectedMonth(
+                          _selectedDate.year,
+                          _selectedDate.month,
                         );
 
-                        Navigator.pop(context);
+                        Navigator.pop(context, true);
                       },
 
                       child: const Text(

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gelir_gider/models/transaction_model.dart';
 import 'package:gelir_gider/providers/transaction_provider.dart';
+
 import 'package:gelir_gider/shared/transaction_builder.dart';
 import 'package:gelir_gider/shared/transaction_widgets/amount_textformfield.dart';
 import 'package:gelir_gider/shared/transaction_widgets/category_dropdown.dart';
@@ -149,15 +150,14 @@ class _EditTransactionScreenState extends State<EditTransactionScreen> {
                           amount: amount,
                         );
 
-                        context.read<TransactionProvider>().updateTransaction(
-                          updated.id,
-                          updated,
-                        );
-                        Navigator.pop(context);
+                        final provider = context.read<TransactionProvider>();
 
-                        context.read<TransactionProvider>().updateTransaction(
-                          updated.id,
-                          updated,
+                        provider.updateTransaction(updated.id, updated);
+
+
+                        provider.setSelectedMonth(
+                          _selectedDate.year,
+                          _selectedDate.month,
                         );
 
                         Navigator.pop(context);
