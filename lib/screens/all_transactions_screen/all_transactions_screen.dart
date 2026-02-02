@@ -183,7 +183,6 @@ class _AllTransactionsScreenState extends State<AllTransactionsScreen> {
     _selectedPeriodType = PeriodType.month;
     _selectedTransactionType = FilterTransactionType.all;
     _selectedCategory = null;
-    _showFilter = false;
   }
 
   @override
@@ -199,12 +198,9 @@ class _AllTransactionsScreenState extends State<AllTransactionsScreen> {
     if (oldWidget.resetOnOpen != widget.resetOnOpen && widget.resetOnOpen) {
       setState(() {
         _resetFilters();
+        _showFilter = false;
       });
     }
-  }
-
-  bool isSameMonth(DateTime a, DateTime b) {
-    return a.year == b.year && a.month == b.month;
   }
 
   @override
@@ -245,23 +241,28 @@ class _AllTransactionsScreenState extends State<AllTransactionsScreen> {
                           ),
 
                           Expanded(
-                            child: Align(
-                              alignment: Alignment.centerRight,
-                              child: TextButton.icon(
-                                style: TextButton.styleFrom(
-                                  foregroundColor: Colors.black,
-                                ),
-                                onPressed: () {
-                                  setState(() {
-                                    _showFilter = !_showFilter;
-                                  });
-                                },
-                                icon: Icon(
-                                  _showFilter
-                                      ? Icons.visibility
-                                      : Icons.visibility_off,
-                                ),
-                                label: Text(_showFilter ? "Gizle" : "Göster"),
+                            child: TextButton(
+                              style: TextButton.styleFrom(
+                                foregroundColor: Colors.black,
+                              ),
+                              onPressed: () {
+                                setState(() {
+                                  _showFilter = !_showFilter;
+                                });
+                              },
+
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                children: [
+                                  Text(_showFilter ? "Gizle" : "Göster"),
+
+                                  const SizedBox(width: 6),
+                                  Icon(
+                                    _showFilter
+                                        ? Icons.visibility
+                                        : Icons.visibility_off,
+                                  ),
+                                ],
                               ),
                             ),
                           ),
@@ -307,6 +308,34 @@ class _AllTransactionsScreenState extends State<AllTransactionsScreen> {
                                 const SizedBox(height: 8),
                                 _buildCategoryPicker(),
                                 const SizedBox(height: 8),
+
+                                TextButton(
+                                  onPressed: () {
+                                    setState(() {
+                                      _resetFilters();
+                                    });
+                                  },
+                                  child: const Row(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      Text(
+                                        "Filtreleri Sıfırla",
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 16,
+                                          color: Colors.black87,
+                                        ),
+                                      ),
+
+                                      SizedBox(width: 6),
+                                      Icon(
+                                        Icons.refresh,
+                                        size: 19,
+                                        color: Colors.black87,
+                                      ),
+                                    ],
+                                  ),
+                                ),
                               ],
                             )
                           : const SizedBox(),
