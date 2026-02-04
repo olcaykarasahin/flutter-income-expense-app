@@ -45,7 +45,7 @@ class _MainScreenState extends State<MainScreen> {
       body: IndexedStack(index: _currentIndex, children: pages),
       bottomNavigationBar: BottomNavigationBar(
         selectedItemColor: Colors.white,
-        backgroundColor: Color(0xFF4A90E2),
+        backgroundColor: const Color(0xFF4A90E2),
         currentIndex: _currentIndex,
         onTap: (i) {
           setState(() {
