@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gelir_gider/providers/transaction_provider.dart';
 import 'package:gelir_gider/screens/all_transactions_screen/all_transactions_screen.dart';
+import 'package:gelir_gider/screens/chart_screen/chart_screen.dart';
 import 'package:gelir_gider/screens/home_screen/home_screen.dart';
 import 'package:gelir_gider/screens/setting_screen/setting.screen.dart';
 import 'package:provider/provider.dart';
@@ -15,6 +16,7 @@ class MainScreen extends StatefulWidget {
 class _MainScreenState extends State<MainScreen> {
   int _currentIndex = 0;
   bool _resetTransactions = false;
+  bool _resetChartMonth = false;
 
   @override
   Widget build(BuildContext context) {
@@ -38,12 +40,16 @@ class _MainScreenState extends State<MainScreen> {
         resetOnOpen: _resetTransactions,
       ),
 
+      ChartScreen(resetOnOpen: _resetChartMonth),
+
       const SettingPage(),
     ];
 
     return Scaffold(
       body: IndexedStack(index: _currentIndex, children: pages),
       bottomNavigationBar: BottomNavigationBar(
+        type: BottomNavigationBarType.fixed,
+
         selectedItemColor: Colors.white,
         backgroundColor: const Color(0xFF4A90E2),
         currentIndex: _currentIndex,
@@ -52,9 +58,15 @@ class _MainScreenState extends State<MainScreen> {
             _currentIndex = i;
 
             if (i == 1) {
-              _resetTransactions = true; // İşlemler tabına geçiş
+              _resetTransactions = true;
             } else {
               _resetTransactions = false;
+            }
+
+            if (i == 2) {
+              _resetChartMonth = true;
+            } else {
+              _resetChartMonth = false;
             }
           });
         },
@@ -65,6 +77,11 @@ class _MainScreenState extends State<MainScreen> {
             icon: Icon(Icons.list_alt),
             label: "İşlemler",
           ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.pie_chart_outline),
+            label: "Grafik",
+          ),
+
           BottomNavigationBarItem(icon: Icon(Icons.settings), label: "Ayarlar"),
         ],
       ),
