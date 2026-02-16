@@ -4,8 +4,14 @@ import 'package:gelir_gider/providers/transaction_provider.dart';
 import 'package:gelir_gider/screens/chart_screen/chart_calculator.dart';
 
 import 'package:fl_chart/fl_chart.dart';
-import 'package:gelir_gider/screens/chart_screen/widget/chart_month_selector.dart';
+import 'package:gelir_gider/screens/chart_screen/widget/category_distribution_section.dart';
+import 'package:gelir_gider/screens/chart_screen/widget/chart_date_selector_card.dart';
+import 'package:gelir_gider/screens/chart_screen/widget/chart_type_button_row.dart';
 import 'package:provider/provider.dart';
+
+enum ChartType { income, expense }
+
+enum ChartPeriodType { month, year }
 
 class ChartScreen extends StatefulWidget {
   final bool resetOnOpen;
@@ -18,73 +24,130 @@ class ChartScreen extends StatefulWidget {
 
 class _ChartScreenState extends State<ChartScreen> {
   late DateTime selectedDate;
+  late ChartType selectedChartType;
+  late ChartPeriodType selectedPeriodType;
 
   @override
   void initState() {
     super.initState();
     selectedDate = context.read<TransactionProvider>().selectedMonth;
+    selectedChartType = ChartType.expense;
+    selectedPeriodType = ChartPeriodType.month;
   }
 
   @override
   Widget build(BuildContext context) {
+    final currency = context.watch<SettingsProvider>().currency;
+
     final allTransactions = context
         .watch<TransactionProvider>()
         .allTransactions;
-    final transactions = filterByMonth(allTransactions, selectedDate);
+    final transactions = selectedPeriodType == ChartPeriodType.month
+        ? filterByMonth(allTransactions, selectedDate)
+        : filterByYear(allTransactions, selectedDate);
 
     final totalExpense = calculateTotalExpense(transactions);
     final totalIncome = calculateTotalIncome(transactions);
     final isEmptyMonth = totalIncome == 0 && totalExpense == 0;
+    final categoryTotals = calculateCategoryTotals(
+      transactions,
+      selectedChartType,
+    );
+
+    final grandTotal = calculateGrandTotal(categoryTotals);
 
     return Scaffold(
       appBar: AppBar(title: const Text("Grafik"), centerTitle: true),
       body: Padding(
         padding: const EdgeInsets.all(8),
-        child: Column(
-          children: [
-            ChartMonthSelector(
-              selectedDate: selectedDate,
-              onChanged: (value) {
-                setState(() {
-                  selectedDate = value;
-                });
-              },
-            ),
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              ChartDateSelectorCard(
+                selectedDate: selectedDate,
+                selectedChartPeriodType: selectedPeriodType,
+                onChangedDate: (DateTime date) {
+                  setState(() {
+                    selectedDate = date;
+                  });
+                },
+                onChangedPeriodType: (ChartPeriodType periodType) {
+                  setState(() {
+                    selectedPeriodType = periodType;
+                  });
+                },
+              ),
 
-            const SizedBox(height: 12),
+              const SizedBox(height: 12),
 
-            isEmptyMonth
-                ? _blankChart()
-                : Card(
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(16),
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.all(12),
-                      child: SizedBox(
-                        height: 240,
-                        child: Column(
-                          children: [
-                            _summaryRow(context, totalExpense, totalIncome),
+              isEmptyMonth
+                  ? _blankChart(selectedPeriodType)
+                  : Card(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(16),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.all(12),
+                        child: SizedBox(
+                          height: 240,
+                          child: Column(
+                            children: [
+                              _summaryRow(totalExpense, totalIncome, currency),
 
-                            Expanded(
-                              child: _incomeExpenseBarChart(
-                                totalIncome,
-                                totalExpense,
+                              Expanded(
+                                child: _incomeExpenseBarChart(
+                                  totalIncome,
+                                  totalExpense,
+                                ),
                               ),
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
                       ),
                     ),
+              if (!isEmptyMonth)
+                Card(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(16),
                   ),
-          ],
+                  child: Padding(
+                    padding: const EdgeInsets.all(12),
+                    child: Column(
+                      children: [
+                        ChartTypeButtonRow(
+                          selectedChartType: selectedChartType,
+                          onChanged: (chartType) {
+                            setState(() {
+                              if (selectedChartType != chartType) {
+                                selectedChartType = chartType;
+                              }
+                            });
+                          },
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(12),
+                          child: CategoryDistributionSection(
+                            categoryTotals: categoryTotals,
+                            grandTotal: grandTotal,
+                            selectedChartType: selectedChartType,
+                            currency: currency,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+            ],
+          ),
         ),
       ),
     );
   }
 
   BarChart _incomeExpenseBarChart(double totalIncome, double totalExpense) {
+    final maxValue =
+        (totalIncome > totalExpense ? totalIncome : totalExpense) * 1.2;
+
     return BarChart(
       BarChartData(
         gridData: const FlGridData(show: false),
@@ -118,7 +181,7 @@ class _ChartScreenState extends State<ChartScreen> {
 
         alignment: BarChartAlignment.spaceAround,
 
-        maxY: (totalIncome > totalExpense ? totalIncome : totalExpense) * 1.2,
+        maxY: maxValue == 0 ? 100 : maxValue,
 
         barGroups: [
           BarChartGroupData(
@@ -148,12 +211,16 @@ class _ChartScreenState extends State<ChartScreen> {
     );
   }
 
-  Card _blankChart() {
+  Card _blankChart(ChartPeriodType selectedPeriodType) {
     return Card(
       child: SizedBox(
         height: 170,
         child: Center(
-          child: _labelText("Seçili Aya Ait Gelir Ve Gider Girilmemiş"),
+          child: _labelText(
+            selectedPeriodType == ChartPeriodType.month
+                ? "Seçili Aya Ait Gelir Ve Gider Girilmemiş"
+                : "Seçili Yıla Ait Gelir Ve Gider Girilmemiş",
+          ),
         ),
       ),
     );
@@ -166,11 +233,7 @@ class _ChartScreenState extends State<ChartScreen> {
     );
   }
 
-  Row _summaryRow(
-    BuildContext context,
-    double totalExpense,
-    double totalIncome,
-  ) {
+  Row _summaryRow(double totalExpense, double totalIncome, String currency) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
 
@@ -180,9 +243,7 @@ class _ChartScreenState extends State<ChartScreen> {
             Row(
               children: [
                 _labelText("Gelir: "),
-                _labelText(
-                  "$totalIncome ${context.watch<SettingsProvider>().currency}",
-                ),
+                _labelText("$totalIncome $currency"),
               ],
             ),
           ],
@@ -192,9 +253,7 @@ class _ChartScreenState extends State<ChartScreen> {
             Row(
               children: [
                 _labelText("Gider: "),
-                _labelText(
-                  "$totalExpense ${context.watch<SettingsProvider>().currency}",
-                ),
+                _labelText("$totalExpense $currency"),
               ],
             ),
           ],
@@ -209,6 +268,7 @@ class _ChartScreenState extends State<ChartScreen> {
     if (oldWidget.resetOnOpen != widget.resetOnOpen && widget.resetOnOpen) {
       setState(() {
         selectedDate = context.read<TransactionProvider>().selectedMonth;
+        selectedPeriodType = ChartPeriodType.month;
       });
     }
   }

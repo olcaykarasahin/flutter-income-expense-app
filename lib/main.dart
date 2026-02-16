@@ -10,8 +10,6 @@ void main() async {
   final settingsProvider = SettingsProvider();
   await settingsProvider.loadSettings();
 
-  // settingsProvider.setDarkMode(false);
-
   runApp(
     MultiProvider(
       providers: [
