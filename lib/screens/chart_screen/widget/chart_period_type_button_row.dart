@@ -4,6 +4,7 @@ import 'package:gelir_gider/screens/chart_screen/chart_screen.dart';
 class ChartPeriodTypeButtonRow extends StatelessWidget {
   final ChartPeriodType selectedChartPeriodType;
   final ValueChanged<ChartPeriodType> onChanged;
+
   const ChartPeriodTypeButtonRow({
     super.key,
     required this.selectedChartPeriodType,
@@ -12,34 +13,46 @@ class ChartPeriodTypeButtonRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceAround,
-      children: [
-        ElevatedButton(
-          style: ElevatedButton.styleFrom(
-            backgroundColor: selectedChartPeriodType == ChartPeriodType.month
-                ? Colors.blue
-                : Colors.blue.shade200,
-            foregroundColor: Colors.white,
+    final colorScheme = Theme.of(context).colorScheme;
+
+    return SizedBox(
+      width: double.infinity,
+      child: SegmentedButton<ChartPeriodType>(
+        segments: const [
+          ButtonSegment(
+            value: ChartPeriodType.month,
+            label: Text("AYLIK"),
+            icon: Icon(Icons.calendar_month),
           ),
-          onPressed: () {
-            onChanged(ChartPeriodType.month);
-          },
-          child: const Text("AYLIK"),
-        ),
-        ElevatedButton(
-          style: ElevatedButton.styleFrom(
-            backgroundColor: selectedChartPeriodType == ChartPeriodType.year
-                ? Colors.blue
-                : Colors.blue.shade200,
-            foregroundColor: Colors.white,
+          ButtonSegment(
+            value: ChartPeriodType.year,
+            label: Text("YILLIK"),
+            icon: Icon(Icons.event),
           ),
-          onPressed: () {
-            onChanged(ChartPeriodType.year);
-          },
-          child: const Text("YILLIK"),
+        ],
+        selected: {selectedChartPeriodType},
+        onSelectionChanged: (value) {
+          onChanged(value.first);
+        },
+        style: ButtonStyle(
+          backgroundColor: WidgetStateProperty.resolveWith((states) {
+            if (states.contains(WidgetState.selected)) {
+              return colorScheme.primaryContainer;
+            }
+            return colorScheme.surfaceContainerLow;
+          }),
+          foregroundColor: WidgetStateProperty.resolveWith((states) {
+            if (states.contains(WidgetState.selected)) {
+              return colorScheme.onPrimaryContainer;
+            }
+            return colorScheme.onSurface;
+          }),
+          side: WidgetStateProperty.all(BorderSide(color: colorScheme.outline)),
+          textStyle: WidgetStateProperty.all(
+            const TextStyle(fontWeight: FontWeight.bold),
+          ),
         ),
-      ],
+      ),
     );
   }
 }

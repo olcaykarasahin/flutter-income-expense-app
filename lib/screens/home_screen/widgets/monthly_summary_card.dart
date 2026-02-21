@@ -1,5 +1,6 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
+import 'package:gelir_gider/providers/settings_provider.dart';
 import 'package:gelir_gider/providers/transaction_provider.dart';
 import 'package:gelir_gider/screens/home_screen/widgets/month_picker_sheet.dart';
 import 'package:provider/provider.dart';
@@ -11,6 +12,10 @@ class MonthlySummaryCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final providerWatch = context.watch<TransactionProvider>();
     final providerRead = context.read<TransactionProvider>();
+    final currency = context.read<SettingsProvider>().currency;
+    final colorScheme = Theme.of(context).colorScheme;
+    final net = providerWatch.netTotal;
+    final isProfit = net >= 0;
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 10),
@@ -57,20 +62,20 @@ class MonthlySummaryCard extends StatelessWidget {
                 children: [
                   _SummaryItem(
                     title: "Gelir",
-                    value: "${providerWatch.totalIncome}₺",
+                    value: "${providerWatch.totalIncome}$currency",
                     color: Colors.green,
                   ),
 
                   _SummaryItem(
                     title: "Gider",
-                    value: "${providerWatch.totalExpense}₺",
-                    color: Colors.red,
+                    value: "${providerWatch.totalExpense}$currency",
+                    color: colorScheme.error,
                   ),
 
                   _SummaryItem(
                     title: "P&L",
-                    value: "${providerWatch.netTotal}₺",
-                    color: Colors.blue,
+                    value: "${providerWatch.netTotal}$currency",
+                    color: isProfit ? Colors.green : colorScheme.error,
                   ),
                 ],
               ),
@@ -97,7 +102,12 @@ class _SummaryItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Text(title, style: const TextStyle(color: Colors.grey)),
+        Text(
+          title,
+          style: TextStyle(
+            color: Theme.of(context).colorScheme.onSurfaceVariant,
+          ),
+        ),
         Text(
           value,
           style: TextStyle(

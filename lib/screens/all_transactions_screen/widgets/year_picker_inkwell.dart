@@ -14,14 +14,15 @@ class YearPickerInkwell extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
     return Material(
-      color: Colors.white,
+      color: colorScheme.surfaceContainerLowest,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(16),
-        side: const BorderSide(color: Colors.black),
+        side: BorderSide(color: colorScheme.outline, width: 2),
       ),
       child: InkWell(
-        borderRadius: BorderRadius.circular(30),
+        borderRadius: BorderRadius.circular(16),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -35,11 +36,18 @@ class YearPickerInkwell extends StatelessWidget {
                 onChanged(DateTime(newYear, selectedDate.month, safeDay));
               },
               iconSize: 26,
-              icon: const Icon(Icons.arrow_circle_left, color: Colors.black87),
+              icon: Icon(
+                Icons.arrow_circle_left,
+                color: colorScheme.onSurfaceVariant,
+              ),
             ),
             Text(
               selectedDate.year.toString(),
-              style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+              style: TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+                color: colorScheme.onSurface,
+              ),
             ),
             IconButton(
               visualDensity: VisualDensity.compact,
@@ -52,7 +60,10 @@ class YearPickerInkwell extends StatelessWidget {
               },
               iconSize: 26,
 
-              icon: const Icon(Icons.arrow_circle_right, color: Colors.black87),
+              icon: Icon(
+                Icons.arrow_circle_right,
+                color: colorScheme.onSurfaceVariant,
+              ),
             ),
           ],
         ),

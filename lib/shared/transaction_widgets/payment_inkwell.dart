@@ -16,25 +16,26 @@ class PaymentInkWellWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
     return InkWell(
       borderRadius: BorderRadius.circular(8),
       onTap: () => _openModalBottomSheet(context),
       child: InputDecorator(
-        decoration: const InputDecoration(
+        decoration: InputDecoration(
           labelText: "Ödeme Türü",
           labelStyle: TextStyle(
             fontWeight: FontWeight.w600,
             fontSize: 20,
-            color: Color(0xFF4A90E2),
+            color: colorScheme.primary,
           ),
-          prefixIcon: Icon(Icons.account_balance_wallet),
-          border: OutlineInputBorder(),
+          prefixIcon: const Icon(Icons.account_balance_wallet),
+          border: const OutlineInputBorder(),
         ),
         child: Row(
           children: [
             Text(
               selectedPaymentType.label,
-              style: const TextStyle(fontSize: 18),
+              style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
             ),
             const Spacer(),
             const Icon(Icons.arrow_drop_down),
@@ -46,10 +47,9 @@ class PaymentInkWellWidget extends StatelessWidget {
 
   void _openModalBottomSheet(BuildContext context) {
     final paymentMap = isIncome ? incomePaymentMap : expensePaymentMap;
+    final colorScheme = Theme.of(context).colorScheme;
 
     showModalBottomSheet(
-      backgroundColor: const Color(0xFF4A90E2),
-
       context: context,
       builder: (_) {
         return SafeArea(
@@ -71,7 +71,18 @@ class PaymentInkWellWidget extends StatelessWidget {
                   trailing: payment == selectedPaymentType
                       ? const Icon(Icons.check)
                       : const SizedBox(),
-                  iconColor: Colors.white,
+
+                  textColor: payment == selectedPaymentType
+                      ? colorScheme.onPrimaryContainer
+                      : colorScheme.onSurface,
+
+                  iconColor: payment == selectedPaymentType
+                      ? colorScheme.onPrimaryContainer
+                      : colorScheme.onSurfaceVariant,
+
+                  tileColor: payment == selectedPaymentType
+                      ? colorScheme.primaryContainer
+                      : null,
 
                   onTap: () {
                     Navigator.pop(context);

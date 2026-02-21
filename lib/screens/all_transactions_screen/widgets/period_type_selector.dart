@@ -13,6 +13,7 @@ class PeriodTypeSegmented extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
     return SizedBox(
       width: double.infinity,
       child: SegmentedButton<PeriodType>(
@@ -40,16 +41,19 @@ class PeriodTypeSegmented extends StatelessWidget {
         style: ButtonStyle(
           backgroundColor: WidgetStateProperty.resolveWith((states) {
             if (states.contains(WidgetState.selected)) {
-              return Colors.blue.shade300; // seçili arka plan
+              return colorScheme.primaryContainer;
             }
-            return Colors.grey.shade200; // seçili değil
+            return colorScheme.surfaceContainerLow;
           }),
           foregroundColor: WidgetStateProperty.resolveWith((states) {
             if (states.contains(WidgetState.selected)) {
-              return Colors.black; // seçili yazı/icon
+              return colorScheme.onPrimaryContainer;
             }
-            return Colors.black54;
+            return colorScheme.onSurface;
           }),
+          side: WidgetStateProperty.all(
+            BorderSide(color: colorScheme.outline, width: 2),
+          ),
           textStyle: WidgetStateProperty.all(
             const TextStyle(fontWeight: FontWeight.bold),
           ),

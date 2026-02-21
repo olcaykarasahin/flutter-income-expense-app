@@ -168,9 +168,9 @@ class _ChartScreenState extends State<ChartScreen> {
               getTitlesWidget: (value, meta) {
                 switch (value.toInt()) {
                   case 0:
-                    return _labelText("Gelir");
+                    return _labelText(context, "Gelir");
                   case 1:
-                    return _labelText("Gider");
+                    return _labelText(context, "Gider");
                   default:
                     return const SizedBox();
                 }
@@ -217,6 +217,7 @@ class _ChartScreenState extends State<ChartScreen> {
         height: 170,
         child: Center(
           child: _labelText(
+            context,
             selectedPeriodType == ChartPeriodType.month
                 ? "Seçili Aya Ait Gelir Ve Gider Girilmemiş"
                 : "Seçili Yıla Ait Gelir Ve Gider Girilmemiş",
@@ -226,10 +227,12 @@ class _ChartScreenState extends State<ChartScreen> {
     );
   }
 
-  Text _labelText(String text) {
+  Text _labelText(BuildContext context, String text) {
     return Text(
       text,
-      style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+      style: Theme.of(
+        context,
+      ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
     );
   }
 
@@ -242,8 +245,12 @@ class _ChartScreenState extends State<ChartScreen> {
           children: [
             Row(
               children: [
-                _labelText("Gelir: "),
-                _labelText("$totalIncome $currency"),
+                Text(
+                  "Gelir: $totalIncome $currency",
+                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
               ],
             ),
           ],
@@ -252,8 +259,12 @@ class _ChartScreenState extends State<ChartScreen> {
           children: [
             Row(
               children: [
-                _labelText("Gider: "),
-                _labelText("$totalExpense $currency"),
+                Text(
+                  "Gider: $totalExpense $currency",
+                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
               ],
             ),
           ],

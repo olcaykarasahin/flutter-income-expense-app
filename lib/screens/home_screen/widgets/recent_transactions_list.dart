@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gelir_gider/models/transaction_model.dart';
+import 'package:gelir_gider/providers/settings_provider.dart';
 import 'package:gelir_gider/providers/transaction_provider.dart';
 import 'package:provider/provider.dart';
 
@@ -27,8 +28,11 @@ class TransactionListItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final currency = context.read<SettingsProvider>().currency;
+    final colorScheme = Theme.of(context).colorScheme;
     return Card(
       child: ListTile(
+        dense: true,
         leading: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -36,7 +40,13 @@ class TransactionListItem extends StatelessWidget {
               "${transaction.date.day}.${transaction.date.month}.${transaction.date.year}",
               style: const TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
             ),
-            Text(transaction.paymentType.label),
+            Text(
+              transaction.paymentType.label,
+              style: TextStyle(
+                fontSize: 12,
+                color: colorScheme.onSurfaceVariant,
+              ),
+            ),
           ],
         ),
         title: Center(
@@ -48,15 +58,18 @@ class TransactionListItem extends StatelessWidget {
         subtitle: Center(
           child: Text(
             transaction.comment,
-            style: const TextStyle(fontSize: 13, fontWeight: FontWeight.bold),
+            style: TextStyle(
+              fontSize: 13,
+              color: Theme.of(context).colorScheme.onSurfaceVariant,
+            ),
           ),
         ),
         trailing: Text(
-          "${transaction.amount}₺",
+          "${transaction.amount}$currency",
           style: TextStyle(
             fontSize: 16,
             fontWeight: FontWeight.bold,
-            color: transaction.isIncome ? Colors.green : Colors.red,
+            color: transaction.isIncome ? Colors.green : colorScheme.error,
           ),
         ),
       ),

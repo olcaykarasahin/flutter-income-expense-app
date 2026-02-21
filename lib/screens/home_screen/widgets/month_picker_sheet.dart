@@ -44,15 +44,13 @@ class _MonthPickerSheetState extends State<MonthPickerSheet> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    final colorScheme = Theme.of(context).colorScheme;
+    return Padding(
       padding: const EdgeInsets.all(16),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          const Text(
-            "Yıl Seç",
-            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-          ),
+          Text("Yıl Seç", style: Theme.of(context).textTheme.titleMedium),
 
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -63,7 +61,7 @@ class _MonthPickerSheetState extends State<MonthPickerSheet> {
                     selectedYear--;
                   });
                 },
-                icon: const Icon(Icons.arrow_left),
+                icon: Icon(Icons.arrow_left, color: colorScheme.primary),
                 iconSize: 35,
               ),
               Text(
@@ -79,18 +77,15 @@ class _MonthPickerSheetState extends State<MonthPickerSheet> {
                     selectedYear++;
                   });
                 },
-                icon: const Icon(Icons.arrow_right),
+                icon: Icon(Icons.arrow_right, color: colorScheme.primary),
                 iconSize: 35,
               ),
             ],
           ),
 
-          const SizedBox(height: 20),
+          const SizedBox(height: 8),
 
-          const Text(
-            "Ay Seç",
-            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-          ),
+          Text("Ay Seç", style: Theme.of(context).textTheme.titleMedium),
 
           const SizedBox(height: 16),
 
@@ -117,12 +112,17 @@ class _MonthPickerSheetState extends State<MonthPickerSheet> {
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(8),
                     color: isSelected
-                        ? Colors.red.shade100
-                        : Colors.green.shade100,
+                        ? colorScheme.primaryContainer
+                        : colorScheme.surfaceContainerLow,
                   ),
                   child: Text(
                     months[index],
-                    style: const TextStyle(fontWeight: FontWeight.bold),
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      color: isSelected
+                          ? colorScheme.onPrimaryContainer
+                          : colorScheme.onSurface,
+                    ),
                   ),
                 ),
               );

@@ -39,15 +39,16 @@ class ChartDateSelectorCard extends StatelessWidget {
               },
             ),
             selectedChartPeriodType == ChartPeriodType.month
-                ? monthSelectorRow()
-                : yearSelectorRow(),
+                ? monthSelectorRow(context)
+                : yearSelectorRow(context),
           ],
         ),
       ),
     );
   }
 
-  Row monthSelectorRow() {
+  Row monthSelectorRow(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
@@ -56,26 +57,29 @@ class ChartDateSelectorCard extends StatelessWidget {
           onPressed: () {
             onChangedDate(DateTime(selectedDate.year, selectedDate.month - 1));
           },
-          icon: const Icon(Icons.arrow_circle_left),
+          icon: Icon(Icons.arrow_circle_left, color: colorScheme.primary),
           iconSize: 26,
         ),
         Text(
           convertMonth(),
-          style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+          style: Theme.of(
+            context,
+          ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
         ),
         IconButton(
           visualDensity: VisualDensity.compact,
           onPressed: () {
             onChangedDate(DateTime(selectedDate.year, selectedDate.month + 1));
           },
-          icon: const Icon(Icons.arrow_circle_right),
+          icon: Icon(Icons.arrow_circle_right, color: colorScheme.primary),
           iconSize: 26,
         ),
       ],
     );
   }
 
-  Row yearSelectorRow() {
+  Row yearSelectorRow(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
@@ -84,19 +88,21 @@ class ChartDateSelectorCard extends StatelessWidget {
           onPressed: () {
             onChangedDate(DateTime(selectedDate.year - 1, selectedDate.month));
           },
-          icon: const Icon(Icons.arrow_circle_left),
+          icon: Icon(Icons.arrow_circle_left, color: colorScheme.primary),
           iconSize: 26,
         ),
         Text(
           convertYear(),
-          style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+          style: Theme.of(
+            context,
+          ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
         ),
         IconButton(
           visualDensity: VisualDensity.compact,
           onPressed: () {
             onChangedDate(DateTime(selectedDate.year + 1, selectedDate.month));
           },
-          icon: const Icon(Icons.arrow_circle_right),
+          icon: Icon(Icons.arrow_circle_right, color: colorScheme.primary),
           iconSize: 26,
         ),
       ],

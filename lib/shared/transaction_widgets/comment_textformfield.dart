@@ -6,19 +6,20 @@ class CommentTextFormField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
     return TextFormField(
       controller: commentcontroller,
-      style: const TextStyle(fontSize: 20),
+      style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
       maxLength: 20,
-      decoration: const InputDecoration(
-        prefixIcon: Icon(Icons.comment),
+      decoration: InputDecoration(
+        prefixIcon: const Icon(Icons.comment),
         labelText: "Açıklama",
         labelStyle: TextStyle(
-          color: Color(0xFF4A90E2),
+          color: colorScheme.primary,
           fontWeight: FontWeight.w600,
           fontSize: 20,
         ),
-        border: OutlineInputBorder(),
+        border: const OutlineInputBorder(),
       ),
     );
   }

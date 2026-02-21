@@ -50,8 +50,12 @@ class _MainScreenState extends State<MainScreen> {
       bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,
 
-        selectedItemColor: Colors.white,
-        backgroundColor: const Color(0xFF4A90E2),
+        selectedItemColor: Theme.of(context).brightness == Brightness.dark
+            ? Theme.of(context).colorScheme.primaryContainer
+            : Theme.of(context).colorScheme.primary,
+
+        backgroundColor: Theme.of(context).colorScheme.surfaceContainerLow,
+        unselectedItemColor: Theme.of(context).colorScheme.onSurfaceVariant,
         currentIndex: _currentIndex,
         onTap: (i) {
           setState(() {

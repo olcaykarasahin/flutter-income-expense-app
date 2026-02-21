@@ -110,22 +110,19 @@ class _EditTransactionScreenState extends State<EditTransactionScreen> {
 
                 const SizedBox(height: 30),
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
                     ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color(0xFF4A90E2),
-                      ),
                       onPressed: () => Navigator.pop(context),
                       child: const Text(
                         "İşlemi İptal Et",
-                        style: TextStyle(color: Colors.black, fontSize: 20),
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                     ),
                     ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color(0xFF4A90E2),
-                      ),
                       onPressed: () {
                         FocusScope.of(context).unfocus();
 
@@ -154,7 +151,6 @@ class _EditTransactionScreenState extends State<EditTransactionScreen> {
 
                         provider.updateTransaction(updated.id, updated);
 
-
                         provider.setSelectedMonth(
                           _selectedDate.year,
                           _selectedDate.month,
@@ -165,7 +161,10 @@ class _EditTransactionScreenState extends State<EditTransactionScreen> {
 
                       child: const Text(
                         "İşlemi Güncelle",
-                        style: TextStyle(color: Colors.black, fontSize: 20),
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                     ),
                   ],

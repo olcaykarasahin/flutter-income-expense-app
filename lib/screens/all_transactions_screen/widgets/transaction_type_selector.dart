@@ -12,6 +12,7 @@ class TransactionTypeSegmented extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
     return SizedBox(
       width: double.infinity,
       child: SegmentedButton<FilterTransactionType>(
@@ -39,28 +40,36 @@ class TransactionTypeSegmented extends StatelessWidget {
         style: ButtonStyle(
           backgroundColor: WidgetStateProperty.resolveWith((states) {
             if (!states.contains(WidgetState.selected)) {
-              return Colors.grey.shade200;
+              return colorScheme.surfaceContainerLow;
             }
 
-            if (selected == FilterTransactionType.all) {
-              return Colors.blue.shade300;
+            switch (selected) {
+              case FilterTransactionType.all:
+                return colorScheme.primaryContainer;
+              case FilterTransactionType.income:
+                return Colors.green.shade200; // geçici
+              case FilterTransactionType.expense:
+                return colorScheme.errorContainer;
             }
-            if (selected == FilterTransactionType.income) {
-              return Colors.green;
-            }
-            if (selected == FilterTransactionType.expense) {
-              return Colors.red;
-            }
-
-            return Colors.grey;
           }),
 
           foregroundColor: WidgetStateProperty.resolveWith((states) {
-            if (states.contains(WidgetState.selected)) {
-              return Colors.black; // seçili yazı/icon
+            if (!states.contains(WidgetState.selected)) {
+              return colorScheme.onSurface;
             }
-            return Colors.black54;
+
+            switch (selected) {
+              case FilterTransactionType.all:
+                return colorScheme.onPrimaryContainer;
+              case FilterTransactionType.income:
+                return Colors.green.shade900; // geçici
+              case FilterTransactionType.expense:
+                return colorScheme.onErrorContainer;
+            }
           }),
+          side: WidgetStateProperty.all(
+            BorderSide(color: colorScheme.outline, width: 2),
+          ),
           textStyle: WidgetStateProperty.all(
             const TextStyle(fontWeight: FontWeight.bold),
           ),

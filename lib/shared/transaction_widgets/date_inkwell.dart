@@ -8,25 +8,26 @@ class DateInkwell extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
     return InkWell(
       borderRadius: BorderRadius.circular(8),
       onTap: () => _openModalBottomSheet(context),
       child: InputDecorator(
-        decoration: const InputDecoration(
+        decoration: InputDecoration(
           labelText: "İşlem Tarihi",
           labelStyle: TextStyle(
             fontWeight: FontWeight.w600,
             fontSize: 20,
-            color: Color(0xFF4A90E2),
+            color: colorScheme.primary,
           ),
-          prefixIcon: Icon(Icons.event),
-          border: OutlineInputBorder(),
+          prefixIcon: const Icon(Icons.event),
+          border: const OutlineInputBorder(),
         ),
         child: Row(
           children: [
             Text(
               DateFormat("dd.MM.yyyy").format(date),
-              style: const TextStyle(fontSize: 18),
+              style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
             ),
             const Spacer(),
             const Icon(Icons.arrow_drop_down),
@@ -37,33 +38,39 @@ class DateInkwell extends StatelessWidget {
   }
 
   Widget _dateRow({
+    required BuildContext context,
     required int value,
     required VoidCallback onLeft,
     required VoidCallback onRight,
   }) {
+    final colorScheme = Theme.of(context).colorScheme;
+
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
         IconButton(
           onPressed: onLeft,
-          icon: const Icon(Icons.arrow_left, size: 40, color: Colors.white),
+          icon: Icon(Icons.arrow_left, size: 40, color: colorScheme.primary),
         ),
         Text(
           value.toString(),
-          style: const TextStyle(fontWeight: FontWeight.w500, fontSize: 20),
+          style: TextStyle(
+            fontWeight: FontWeight.w500,
+            fontSize: 20,
+            color: colorScheme.onSurface,
+          ),
         ),
         IconButton(
           onPressed: onRight,
-          icon: const Icon(Icons.arrow_right, size: 40, color: Colors.white),
+          icon: Icon(Icons.arrow_right, size: 40, color: colorScheme.primary),
         ),
       ],
     );
   }
 
   void _openModalBottomSheet(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
     showModalBottomSheet(
-      backgroundColor: const Color(0xFF4A90E2),
-
       context: context,
       builder: (_) {
         DateTime newDate = date;
@@ -77,12 +84,10 @@ class DateInkwell extends StatelessWidget {
 
                   const Text(
                     "Gün",
-                    style: TextStyle(
-                      fontWeight: FontWeight.w500,
-                      fontSize: 18,
-                    ),
+                    style: TextStyle(fontWeight: FontWeight.w500, fontSize: 18),
                   ),
                   _dateRow(
+                    context: context,
                     value: newDate.day,
                     onLeft: () {
                       setState(() {
@@ -98,17 +103,16 @@ class DateInkwell extends StatelessWidget {
                   ),
 
                   const SizedBox(height: 10),
-                  const Divider(height: 2, color: Colors.black),
+                  Divider(height: 2, color: colorScheme.outline),
                   const SizedBox(height: 10),
 
                   const Text(
                     "Ay",
-                    style: TextStyle(
-                      fontWeight: FontWeight.w500,
-                      fontSize: 18,
-                    ),
+                    style: TextStyle(fontWeight: FontWeight.w500, fontSize: 18),
                   ),
                   _dateRow(
+                    context: context,
+
                     value: newDate.month,
                     onLeft: () {
                       setState(() {
@@ -131,17 +135,16 @@ class DateInkwell extends StatelessWidget {
                   ),
 
                   const SizedBox(height: 10),
-                  const Divider(height: 2, color: Colors.black),
+                  Divider(height: 2, color: colorScheme.outline),
                   const SizedBox(height: 10),
 
                   const Text(
                     "Yıl",
-                    style: TextStyle(
-                      fontWeight: FontWeight.w500,
-                      fontSize: 18,
-                    ),
+                    style: TextStyle(fontWeight: FontWeight.w500, fontSize: 18),
                   ),
                   _dateRow(
+                    context: context,
+
                     value: newDate.year,
                     onLeft: () {
                       setState(() {
@@ -164,7 +167,7 @@ class DateInkwell extends StatelessWidget {
                   ),
 
                   const SizedBox(height: 10),
-                  const Divider(height: 2, color: Colors.black),
+                  Divider(height: 2, color: colorScheme.outline),
                   const SizedBox(height: 10),
 
                   ElevatedButton(
@@ -174,7 +177,10 @@ class DateInkwell extends StatelessWidget {
                     },
                     child: const Text(
                       "Onayla",
-                      style: TextStyle(fontSize: 20, color: Colors.black),
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.w600,
+                      ),
                     ),
                   ),
                   const SizedBox(height: 20),

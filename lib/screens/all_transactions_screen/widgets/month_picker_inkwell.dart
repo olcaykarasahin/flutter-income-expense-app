@@ -20,11 +20,13 @@ class MonthPickerInkwell extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+
     return Material(
-      color: Colors.white,
+      color: colorScheme.surfaceContainerLowest,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(16),
-        side: const BorderSide(color: Colors.black),
+        side: BorderSide(color: colorScheme.outline, width: 2),
       ),
       child: InkWell(
         borderRadius: BorderRadius.circular(12),
@@ -47,55 +49,58 @@ class MonthPickerInkwell extends StatelessWidget {
   }
 
   void openShowModalBottomSheet(BuildContext context) {
-    showModalBottomSheet(
-      backgroundColor: const Color(0xFF4A90E2),
+    final colorScheme = Theme.of(context).colorScheme;
 
+    showModalBottomSheet(
       context: context,
       builder: (_) {
-        return GridView.builder(
-          physics: const NeverScrollableScrollPhysics(),
-          shrinkWrap: true,
-          itemCount: months.length,
-          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 4,
-          ),
-          itemBuilder: (context, index) {
-            final month = months[index];
-            return Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: InkWell(
-                onTap: () {
-                  final maxDay = daysInMonth(selectedDate.year, index + 1);
-                  final safeDay = selectedDate.day.clamp(1, maxDay);
+        return Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: GridView.builder(
+            physics: const NeverScrollableScrollPhysics(),
+            shrinkWrap: true,
+            itemCount: months.length,
+            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 4,
+            ),
+            itemBuilder: (context, index) {
+              final month = months[index];
+              return Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: InkWell(
+                  onTap: () {
+                    final maxDay = daysInMonth(selectedDate.year, index + 1);
+                    final safeDay = selectedDate.day.clamp(1, maxDay);
 
-                  onChanged(DateTime(selectedDate.year, index + 1, safeDay));
-                  Navigator.pop(context);
-                },
-                child: Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(30),
-                    border: Border.all(width: 2, color: Colors.grey),
-                    color: selectedDate.month - 1 == index
-                        ? Colors.black
-                        : Colors.white,
-                  ),
-                  child: Center(
-                    child: Text(
-                      month.toString(),
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        fontSize: 13,
-                        color: selectedDate.month - 1 == index
-                            ? Colors.white
-                            : Colors.black,
-                        fontWeight: FontWeight.bold,
+                    onChanged(DateTime(selectedDate.year, index + 1, safeDay));
+                    Navigator.pop(context);
+                  },
+                  child: Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(30),
+                      border: Border.all(width: 2, color: colorScheme.outline),
+                      color: selectedDate.month - 1 == index
+                          ? colorScheme.primaryContainer
+                          : colorScheme.surface,
+                    ),
+                    child: Center(
+                      child: Text(
+                        month.toString(),
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontSize: 13,
+                          color: selectedDate.month - 1 == index
+                              ? colorScheme.onPrimaryContainer
+                              : colorScheme.onSurface,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                     ),
                   ),
                 ),
-              ),
-            );
-          },
+              );
+            },
+          ),
         );
       },
     );

@@ -14,11 +14,13 @@ class CategoryPicker extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+
     return Material(
-      color: Colors.white,
+      color: colorScheme.surfaceContainerLowest,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(16),
-        side: const BorderSide(color: Colors.black),
+        side: BorderSide(color: colorScheme.outline, width: 2),
       ),
       child: InkWell(
         onTap: () => openShowModalBottomSheet(context),
@@ -40,8 +42,8 @@ class CategoryPicker extends StatelessWidget {
   }
 
   void openShowModalBottomSheet(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
     showModalBottomSheet(
-      backgroundColor: const Color(0xFF4A90E2),
       isScrollControlled: true,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
@@ -53,10 +55,16 @@ class CategoryPicker extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             children: [
               ListTile(
+                tileColor: selectedCategory == null
+                    ? colorScheme.primaryContainer
+                    : null,
                 leading: const Icon(Icons.all_inbox),
                 textColor: selectedCategory == null
-                    ? Colors.white
-                    : Colors.black,
+                    ? colorScheme.onPrimaryContainer
+                    : colorScheme.onSurface,
+                iconColor: selectedCategory == null
+                    ? colorScheme.onPrimaryContainer
+                    : colorScheme.onSurfaceVariant,
 
                 title: const Center(
                   child: Text(
@@ -67,7 +75,6 @@ class CategoryPicker extends StatelessWidget {
                 trailing: selectedCategory == null
                     ? const Icon(Icons.check)
                     : const SizedBox(),
-                iconColor: Colors.white,
 
                 onTap: () {
                   Navigator.pop(context);
@@ -76,10 +83,16 @@ class CategoryPicker extends StatelessWidget {
               ),
               ...categories.keys.map((category) {
                 return ListTile(
+                  tileColor: category == selectedCategory
+                      ? colorScheme.primaryContainer
+                      : null,
                   leading: Icon(categories[category]),
                   textColor: category == selectedCategory
-                      ? Colors.white
-                      : Colors.black,
+                      ? colorScheme.onPrimaryContainer
+                      : colorScheme.onSurface,
+                  iconColor: category == selectedCategory
+                      ? colorScheme.onPrimaryContainer
+                      : colorScheme.onSurfaceVariant,
 
                   title: Center(
                     child: Text(
@@ -93,7 +106,6 @@ class CategoryPicker extends StatelessWidget {
                   trailing: category == selectedCategory
                       ? const Icon(Icons.check)
                       : const SizedBox(),
-                  iconColor: Colors.white,
                   onTap: () {
                     Navigator.pop(context);
                     onChanged(category);

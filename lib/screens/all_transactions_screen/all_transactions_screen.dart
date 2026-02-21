@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gelir_gider/models/transaction_model.dart';
+import 'package:gelir_gider/providers/settings_provider.dart';
 import 'package:gelir_gider/providers/transaction_provider.dart';
 import 'package:gelir_gider/screens/all_transactions_screen/widgets/category_picker.dart';
 import 'package:gelir_gider/screens/all_transactions_screen/widgets/day_picker_inkwell.dart';
@@ -210,67 +211,72 @@ class _AllTransactionsScreenState extends State<AllTransactionsScreen> {
 
     final income = getTotalIncome(transactions);
     final expense = getTotalExpense(transactions);
+    final currency = context.watch<SettingsProvider>().currency;
 
     return Scaffold(
-      appBar: AppBar(title: const Text("Tüm İşlemler")),
+      appBar: AppBar(title: const Text("Tüm İşlemler"), centerTitle: true),
       body: CustomScrollView(
         slivers: [
           SliverToBoxAdapter(
             child: Padding(
               padding: const EdgeInsets.all(8.0),
               child: Card(
-                color: const Color(0xFFB6D1F2),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(20),
                 ),
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Column(
-                    children: [
-                      const SizedBox(height: 6),
+                child: Column(
+                  children: [
+                    const SizedBox(height: 6),
 
-                      Row(
-                        children: [
-                          const Expanded(child: SizedBox()),
-                          const Text(
-                            "Filtre Ayarları",
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 20,
+                    Row(
+                      children: [
+                        const Expanded(child: SizedBox()),
+                        const Text(
+                          "Filtre Ayarları",
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 20,
+                          ),
+                        ),
+
+                        Expanded(
+                          child: TextButton(
+                            style: TextButton.styleFrom(
+                              foregroundColor: Theme.of(
+                                context,
+                              ).colorScheme.onSurface,
+                            ),
+                            onPressed: () {
+                              setState(() {
+                                _showFilter = !_showFilter;
+                              });
+                            },
+
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: [
+                                Text(_showFilter ? "Gizle" : "Göster"),
+
+                                const SizedBox(width: 6),
+                                Icon(
+                                  _showFilter
+                                      ? Icons.visibility
+                                      : Icons.visibility_off,
+                                ),
+                              ],
                             ),
                           ),
-
-                          Expanded(
-                            child: TextButton(
-                              style: TextButton.styleFrom(
-                                foregroundColor: Colors.black,
-                              ),
-                              onPressed: () {
-                                setState(() {
-                                  _showFilter = !_showFilter;
-                                });
-                              },
-
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.end,
-                                children: [
-                                  Text(_showFilter ? "Gizle" : "Göster"),
-
-                                  const SizedBox(width: 6),
-                                  Icon(
-                                    _showFilter
-                                        ? Icons.visibility
-                                        : Icons.visibility_off,
-                                  ),
-                                ],
-                              ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 10),
+                    _showFilter
+                        ? Padding(
+                            padding: const EdgeInsets.only(
+                              right: 8.0,
+                              left: 8.0,
                             ),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(height: 10),
-                      _showFilter
-                          ? Column(
+                            child: Column(
                               children: [
                                 PeriodTypeSegmented(
                                   selected: _selectedPeriodType,
@@ -315,7 +321,7 @@ class _AllTransactionsScreenState extends State<AllTransactionsScreen> {
                                       _resetFilters();
                                     });
                                   },
-                                  child: const Row(
+                                  child: Row(
                                     mainAxisSize: MainAxisSize.min,
                                     children: [
                                       Text(
@@ -323,24 +329,28 @@ class _AllTransactionsScreenState extends State<AllTransactionsScreen> {
                                         style: TextStyle(
                                           fontWeight: FontWeight.bold,
                                           fontSize: 16,
-                                          color: Colors.black87,
+                                          color: Theme.of(
+                                            context,
+                                          ).colorScheme.onSurface,
                                         ),
                                       ),
 
-                                      SizedBox(width: 6),
+                                      const SizedBox(width: 6),
                                       Icon(
                                         Icons.refresh,
                                         size: 19,
-                                        color: Colors.black87,
+                                        color: Theme.of(
+                                          context,
+                                        ).colorScheme.onSurface,
                                       ),
                                     ],
                                   ),
                                 ),
                               ],
-                            )
-                          : const SizedBox(),
-                    ],
-                  ),
+                            ),
+                          )
+                        : const SizedBox(),
+                  ],
                 ),
               ),
             ),
@@ -352,8 +362,6 @@ class _AllTransactionsScreenState extends State<AllTransactionsScreen> {
               child: Column(
                 children: [
                   Card(
-                    color: const Color(0xFFB6D1F2),
-
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(16),
                     ),
@@ -367,11 +375,13 @@ class _AllTransactionsScreenState extends State<AllTransactionsScreen> {
                           Expanded(
                             child: Column(
                               children: [
-                                const Text(
+                                Text(
                                   "Tarih",
                                   style: TextStyle(
                                     fontSize: 12,
-                                    color: Colors.black54,
+                                    color: Theme.of(
+                                      context,
+                                    ).colorScheme.onSurfaceVariant,
                                   ),
                                 ),
                                 const SizedBox(height: 4),
@@ -397,10 +407,12 @@ class _AllTransactionsScreenState extends State<AllTransactionsScreen> {
                                 ),
                                 const SizedBox(height: 6),
                                 Text(
-                                  "${transactions.length} işlem",
-                                  style: const TextStyle(
+                                  "${transactions.length} İşlem",
+                                  style: TextStyle(
                                     fontSize: 12,
-                                    color: Colors.black54,
+                                    color: Theme.of(
+                                      context,
+                                    ).colorScheme.onSurfaceVariant,
                                   ),
                                 ),
                               ],
@@ -410,11 +422,13 @@ class _AllTransactionsScreenState extends State<AllTransactionsScreen> {
                           Expanded(
                             child: Column(
                               children: [
-                                const Text(
+                                Text(
                                   "Kategori",
                                   style: TextStyle(
                                     fontSize: 12,
-                                    color: Colors.black54,
+                                    color: Theme.of(
+                                      context,
+                                    ).colorScheme.onSurfaceVariant,
                                   ),
                                 ),
                                 const SizedBox(height: 4),
@@ -459,46 +473,56 @@ class _AllTransactionsScreenState extends State<AllTransactionsScreen> {
                       direction: DismissDirection.endToStart,
                       background: Container(
                         decoration: BoxDecoration(
-                          color: Colors.red.shade600,
+                          color: Theme.of(context).colorScheme.error,
                           borderRadius: BorderRadius.circular(8),
                         ),
                         alignment: Alignment.centerRight,
                         padding: const EdgeInsets.only(right: 20),
-                        child: const Icon(Icons.delete, color: Colors.white),
+                        child: Icon(
+                          Icons.delete,
+                          color: Theme.of(context).colorScheme.onError,
+                        ),
                       ),
                       onDismissed: (_) {
                         context.read<TransactionProvider>().deleteTransaction(
                           tx.id,
                         );
                       },
-                      child: Card(
-                        child: ListTile(
-                          onTap: () => Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (_) => EditTransactionScreen(
-                                updatedTransactionModel: tx,
+                      child: Padding(
+                        padding: const EdgeInsets.only(left: 8.0, right: 8.0),
+                        child: Card(
+                          child: ListTile(
+                            onTap: () => Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (_) => EditTransactionScreen(
+                                  updatedTransactionModel: tx,
+                                ),
                               ),
                             ),
-                          ),
-                          leading: Text(
-                            "${tx.date.day}/${tx.date.month}/${tx.date.year}",
-                            style: const TextStyle(fontWeight: FontWeight.bold),
-                          ),
-                          title: Text(
-                            tx.category,
-                            textAlign: TextAlign.center,
-                            style: const TextStyle(fontWeight: FontWeight.bold),
-                          ),
-                          subtitle: Text(
-                            tx.comment,
-                            textAlign: TextAlign.center,
-                          ),
-                          trailing: Text(
-                            "₺${tx.amount}",
-                            style: TextStyle(
-                              color: tx.isIncome ? Colors.green : Colors.red,
-                              fontWeight: FontWeight.bold,
+                            leading: Text(
+                              "${tx.date.day}/${tx.date.month}/${tx.date.year}",
+                              style: const TextStyle(
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            title: Text(
+                              tx.category,
+                              textAlign: TextAlign.center,
+                              style: const TextStyle(
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            subtitle: Text(
+                              tx.comment,
+                              textAlign: TextAlign.center,
+                            ),
+                            trailing: Text(
+                              "$currency ${tx.amount}",
+                              style: TextStyle(
+                                color: tx.isIncome ? Colors.green : Colors.red,
+                                fontWeight: FontWeight.bold,
+                              ),
                             ),
                           ),
                         ),

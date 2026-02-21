@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gelir_gider/core/theme/app_theme.dart';
 import 'package:gelir_gider/providers/settings_provider.dart';
 import 'package:gelir_gider/providers/transaction_provider.dart';
 import 'package:gelir_gider/screens/root/root_page.dart';
@@ -31,12 +32,8 @@ class GelirGiderApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       themeMode: settings.isDarkMode ? ThemeMode.dark : ThemeMode.light,
-      theme: ThemeData(
-        cardTheme: const CardThemeData(color: Colors.white),
-        appBarTheme: const AppBarTheme(backgroundColor: Color(0xFF4A90E2)),
-        scaffoldBackgroundColor: const Color(0xFFF7F9FC),
-      ),
-      darkTheme: ThemeData.dark(),
+      theme: AppTheme.lightTheme,
+      darkTheme: AppTheme.darkTheme,
       home: const MainScreen(),
     );
   }

@@ -20,11 +20,12 @@ class DayPickerInkwell extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
     return Material(
-      color: Colors.white,
+      color: colorScheme.surfaceContainerLowest,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(16),
-        side: const BorderSide(color: Colors.black),
+        side: BorderSide(color: colorScheme.outline, width: 2),
       ),
       child: InkWell(
         borderRadius: BorderRadius.circular(12),
@@ -48,10 +49,10 @@ class DayPickerInkwell extends StatelessWidget {
 
   void openShowModalBottomSheet(BuildContext context) {
     showModalBottomSheet(
-      backgroundColor: const Color(0xFF4A90E2),
-
       context: context,
       builder: (_) {
+        final colorScheme = Theme.of(context).colorScheme;
+
         final totalDays = daysInMonth(selectedDate.year, selectedDate.month);
 
         List<int> days = List.generate(totalDays, (index) => index + 1);
@@ -78,10 +79,10 @@ class DayPickerInkwell extends StatelessWidget {
                   child: Container(
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(30),
-                      border: Border.all(width: 2, color: Colors.grey),
+                      border: Border.all(width: 2, color: colorScheme.outline),
                       color: selectedDate.day == day
-                          ? Colors.black
-                          : Colors.white,
+                          ? colorScheme.primaryContainer
+                          : colorScheme.surface,
                     ),
                     child: Center(
                       child: Text(
@@ -90,8 +91,8 @@ class DayPickerInkwell extends StatelessWidget {
                         style: TextStyle(
                           fontSize: 18,
                           color: selectedDate.day == day
-                              ? Colors.white
-                              : Colors.black,
+                              ? colorScheme.onPrimaryContainer
+                              : colorScheme.onSurface,
                           fontWeight: FontWeight.bold,
                         ),
                       ),

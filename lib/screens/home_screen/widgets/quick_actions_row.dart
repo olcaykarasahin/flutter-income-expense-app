@@ -1,6 +1,8 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
 
+enum ActionType { income, expense }
+
 class QuickActionsRow extends StatelessWidget {
   final VoidCallback onAddIncome;
   final VoidCallback onAddExpense;
@@ -10,7 +12,6 @@ class QuickActionsRow extends StatelessWidget {
     required this.onAddIncome,
     required this.onAddExpense,
   });
-
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -20,9 +21,8 @@ class QuickActionsRow extends StatelessWidget {
           ActionButton(
             buttonText: "Gelir Ekle",
             buttonIcon: Icons.add,
-            textColor: Colors.white,
-            buttonColor: Colors.green,
             onPressed: onAddIncome,
+            type: ActionType.income,
           ),
 
           const SizedBox(width: 10),
@@ -30,8 +30,7 @@ class QuickActionsRow extends StatelessWidget {
           ActionButton(
             buttonText: "Gider Ekle",
             buttonIcon: Icons.remove,
-            textColor: Colors.white,
-            buttonColor: Colors.red,
+            type: ActionType.expense,
             onPressed: onAddExpense,
           ),
         ],
@@ -43,25 +42,40 @@ class QuickActionsRow extends StatelessWidget {
 class ActionButton extends StatelessWidget {
   final String buttonText;
   final IconData buttonIcon;
-  final Color textColor;
-  final Color buttonColor;
   final VoidCallback onPressed;
+  final ActionType type;
 
   const ActionButton({
     super.key,
     required this.buttonText,
     required this.buttonIcon,
-    required this.textColor,
-    required this.buttonColor,
     required this.onPressed,
+    required this.type,
   });
+
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+
+    Color backgroundColor;
+    Color foregroundColor;
+
+    switch (type) {
+      case ActionType.income:
+        backgroundColor = Colors.green;
+        foregroundColor = colorScheme.onTertiary;
+        break;
+      case ActionType.expense:
+        backgroundColor = colorScheme.error;
+        foregroundColor = colorScheme.onError;
+        break;
+    }
+
     return Expanded(
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(
-          backgroundColor: buttonColor,
-          foregroundColor: textColor,
+          backgroundColor: backgroundColor,
+          foregroundColor: foregroundColor,
           textStyle: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
           iconSize: 22,
         ),
